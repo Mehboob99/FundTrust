@@ -1,0 +1,5 @@
+.statsRow { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; margin-bottom: 2.5rem; }
+.section { margin-top: 2rem; }
+.sectionHdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+.sectionTitle { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1b2d1e; }
+@media(max-width: 640px) { .statsRow { grid-template-columns: 1fr; } }

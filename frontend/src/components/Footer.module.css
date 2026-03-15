@@ -1,0 +1,12 @@
+.footer { background: #1b2d1e; color: #a5c8a8; padding: 3rem 0 0; }
+.grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 2rem; }
+.brand { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #d8f3dc; margin-bottom: 0.7rem; }
+.tagline { font-size: 0.82rem; line-height: 1.6; color: #7a9e7e; }
+.col_title { color: #d8f3dc; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+.col_links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.col_links a { color: #a5c8a8; font-size: 0.83rem; text-decoration: none; transition: color 0.2s; }
+.col_links a:hover { color: #52b788; }
+.contact_info { font-size: 0.82rem; margin-bottom: 0.4rem; }
+.bottom { border-top: 1px solid #2d4a30; text-align: center; padding: 1.2rem; margin-top: 2rem; font-size: 0.78rem; color: #7a9e7e; }
+@media(max-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width: 480px) { .grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,11 @@
+.intro { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 0; }
+.introText p { color: #4a6741; line-height: 1.8; font-size: 0.93rem; }
+.introImg img { width: 100%; border-radius: 16px; box-shadow: 0 8px 40px rgba(45,106,79,0.18); }
+.valuesGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.valueCard { background: #fff; border: 1.5px solid #c8e6c9; border-radius: 14px; padding: 1.8rem; text-align: center; transition: all 0.25s; }
+.valueCard:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(45,106,79,0.12); }
+.valueIcon { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; }
+.valueTitle { font-family: 'Playfair Display', serif; font-size: 1rem; color: #1b2d1e; margin-bottom: 0.5rem; }
+.valueDesc { font-size: 0.8rem; color: #7a9e7e; line-height: 1.6; }
+@media(max-width: 900px) { .intro { grid-template-columns: 1fr; } .valuesGrid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width: 600px) { .valuesGrid { grid-template-columns: 1fr; } }

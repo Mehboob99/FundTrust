@@ -1,0 +1,19 @@
+.tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.tab { padding: 0.5rem 1.2rem; border-radius: 50px; border: 1.5px solid #c8e6c9; background: #fff; color: #4a6741; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: 'Poppins',sans-serif; }
+.tab:hover { border-color: #52b788; }
+.tabActive { background: #2d6a4f !important; color: #fff !important; border-color: #2d6a4f !important; }
+.grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+.card { background: #fff; border: 1.5px solid #c8e6c9; border-radius: 14px; padding: 1.4rem; transition: all 0.25s; }
+.card:hover { box-shadow: 0 6px 24px rgba(45,106,79,0.12); transform: translateY(-3px); }
+.cardTop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+.typeIcon { font-size: 2rem; }
+.cardTitle { font-weight: 600; color: #1b2d1e; font-size: 0.88rem; margin-bottom: 0.5rem; line-height: 1.4; }
+.cardProject { font-size: 0.78rem; color: #2d6a4f; font-weight: 600; }
+.cardNgo { font-size: 0.72rem; color: #7a9e7e; }
+.cardDate { font-size: 0.7rem; color: #7a9e7e; margin-top: 0.4rem; }
+.mediaPreview { width: 100%; margin-bottom: 0.8rem; border-radius: 8px; overflow: hidden; }
+.previewImg { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; display: block; }
+.previewVideo { width: 100%; height: 160px; border-radius: 8px; background: #000; display: block; }
+.receiptLink { display: inline-block; padding: 8px 16px; background: #f0f0f0; border-radius: 6px; color: #333; text-decoration: none; font-size: 14px; }
+@media(max-width:900px) { .grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:600px) { .grid { grid-template-columns: 1fr; } }

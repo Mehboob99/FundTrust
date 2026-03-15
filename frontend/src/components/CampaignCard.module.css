@@ -1,0 +1,16 @@
+.card { display: flex; flex-direction: column; }
+.imgWrap { position: relative; height: 200px; overflow: hidden; }
+.img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.card:hover .img { transform: scale(1.05); }
+.cat { position: absolute; top: 0.75rem; left: 0.75rem; }
+.body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+.ngo { font-size: 0.72rem; color: #52b788; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #1b2d1e; line-height: 1.4; }
+.loc { font-size: 0.75rem; color: #7a9e7e; }
+.prog { margin-top: 0.5rem; }
+.progInfo { display: flex; justify-content: space-between; margin-top: 0.5rem; }
+.raised { font-weight: 700; color: #2d6a4f; font-size: 0.9rem; }
+.pct { font-size: 0.78rem; color: #7a9e7e; font-weight: 600; }
+.goal { font-size: 0.72rem; color: #7a9e7e; margin-top: 0.2rem; }
+.footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 0.8rem; border-top: 1px solid #d8f3dc; }
+.donors { font-size: 0.76rem; color: #7a9e7e; }

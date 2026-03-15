@@ -1,0 +1,19 @@
+.wrap { max-width: 900px; margin: 0 auto; }
+.title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #1b2d1e; margin-bottom: 0.3rem; }
+.sub { color: #7a9e7e; font-size: 0.88rem; margin-bottom: 2rem; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.uploadBox { background: #fff; border: 1.5px solid #c8e6c9; border-radius: 16px; padding: 1.8rem; }
+.typePicker { display: flex; gap: 0.5rem; }
+.typeBtn { flex: 1; padding: 0.6rem; border: 1.5px solid #c8e6c9; border-radius: 8px; background: #fff; cursor: pointer; font-family: 'Poppins',sans-serif; font-size: 0.8rem; transition: all 0.2s; }
+.typeActive { background: #2d6a4f !important; color: #fff !important; border-color: #2d6a4f !important; }
+.fileBox { border: 2px dashed #c8e6c9; border-radius: 10px; padding: 1.5rem; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+.fileBox:hover { border-color: #52b788; }
+.fileLabel { cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.fileIcon { font-size: 2rem; }
+.histTitle { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #1b2d1e; margin-bottom: 1rem; }
+.proofsList { display: flex; flex-direction: column; gap: 0.6rem; }
+.proofItem { display: flex; align-items: center; gap: 0.8rem; background: #f0faf2; border: 1px solid #c8e6c9; border-radius: 10px; padding: 0.9rem; }
+.proofIcon { font-size: 1.5rem; }
+.proofName { font-size: 0.83rem; color: #1b2d1e; font-weight: 500; }
+.proofDate { font-size: 0.72rem; color: #7a9e7e; }
+@media(max-width: 768px) { .grid { grid-template-columns: 1fr; } }
