@@ -108,6 +108,7 @@ def init_db():
     db.close()
 
 def seed_db():
+    
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
     if db.execute("SELECT COUNT(*) FROM users").fetchone()[0] > 0:
@@ -121,12 +122,36 @@ def seed_db():
     donor_id = db.execute("SELECT id FROM users WHERE email='donor@fundtrust.in'").fetchone()[0]
     projects = [
 
-    ('Digital Classrooms for Rural Schools','We are bringing digital education to 50 rural schools in Rajasthan. Tablets, projectors, and internet for children who never used a computer.','Rajasthan','Education',500000,312000,'/api/uploads/digital-classrooms.png'),
-    ('Community Kitchen - Feed 1000 Families','Nutritious meals for underprivileged families in Mumbai slums. Two hot meals a day ensuring no child sleeps hungry.','Mumbai, Maharashtra','Food & Nutrition',300000,187500,'/api/uploads/community-kitchen.png'),
-    ('Mobile Healthcare Camps in Villages','Monthly healthcare camps in remote UP villages — free checkups, medicines, and health awareness for thousands.','Uttar Pradesh','Healthcare',750000,423000,'/api/uploads/health-care.png'),
-    ('Clean Water for 10 Villages','Solar-powered water purification in drought-affected Vidarbha villages. Clean water for 5000+ residents.','Vidarbha, Maharashtra','Water & Sanitation',1200000,890000,'/api/uploads/water.png'),
-    ('Skill Training for Village Women','Empowering 200 rural women in Gujarat through tailoring, handicrafts & digital literacy training.','Gujarat','Women Empowerment',400000,156000,'/api/uploads/skill-training.png'),
-    ('Flood Relief for Bihar Villages','Emergency relief for flood-affected Bihar families — food, medicines, blankets & shelter for 2000+ families.','Bihar','Disaster Relief',800000,650000,'/api/uploads/flood-relief.png'),
+('Digital Classrooms for Rural Schools',
+'We are bringing digital education to 50 rural schools in Rajasthan. Tablets, projectors, and internet for children who never used a computer.',
+'Rajasthan','Education',500000,312000,
+'https://fundtrust.onrender.com/api/uploads/digital-classrooms.png'),
+
+('Community Kitchen - Feed 1000 Families',
+'Nutritious meals for underprivileged families in Mumbai slums. Two hot meals a day ensuring no child sleeps hungry.',
+'Mumbai, Maharashtra','Food & Nutrition',300000,187500,
+'https://fundtrust.onrender.com/api/uploads/community-kitchen.png'),
+
+('Mobile Healthcare Camps in Villages',
+'Monthly healthcare camps in remote UP villages — free checkups, medicines, and health awareness for thousands.',
+'Uttar Pradesh','Healthcare',750000,423000,
+'https://fundtrust.onrender.com/api/uploads/health-care.png'),
+
+('Clean Water for 10 Villages',
+'Solar-powered water purification in drought-affected Vidarbha villages. Clean water for 5000+ residents.',
+'Vidarbha, Maharashtra','Water & Sanitation',1200000,890000,
+'https://fundtrust.onrender.com/api/uploads/water.png'),
+
+('Skill Training for Village Women',
+'Empowering 200 rural women in Gujarat through tailoring, handicrafts & digital literacy training.',
+'Gujarat','Women Empowerment',400000,156000,
+'https://fundtrust.onrender.com/api/uploads/skill-training.png'),
+
+('Flood Relief for Bihar Villages',
+'Emergency relief for flood-affected Bihar families — food, medicines, blankets & shelter for 2000+ families.',
+'Bihar','Disaster Relief',800000,650000,
+'https://fundtrust.onrender.com/api/uploads/flood-relief.png'),
+
 ]
     for title,desc,loc,cat,goal,raised,img in projects:
         db.execute("INSERT INTO projects(ngo_id,title,description,location,category,goal_amount,amount_raised,image_url,created_at) VALUES(?,?,?,?,?,?,?,?,?)",
