@@ -19,7 +19,7 @@ export default function ProjectDetail() {
   const [tab, setTab] = useState('about')
 
   useEffect(() => {
-    axios.get(`/api/projects/${id}`)
+    axios.get(`https://fundtrust.onrender.com/api/projects/${id}`)
       .then(r => setProject(r.data))
       .catch(() => navigate('/projects'))
       .finally(() => setLoading(false))
@@ -33,7 +33,7 @@ export default function ProjectDetail() {
       const r = await axios.post(`/api/donate/${id}`, { amount: Number(amount), message })
       toast.success(r.data.message)
       setAmount(''); setMsg('')
-      const r2 = await axios.get(`/api/projects/${id}`)
+      const r2 = await axios.get(`https://fundtrust.onrender.com/api/projects/${id}`)
       setProject(r2.data)
     } catch (e) {
       toast.error(e.response?.data?.error || 'Donation failed')

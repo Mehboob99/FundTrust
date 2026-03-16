@@ -250,7 +250,7 @@ export default function Home() {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    Promise.all([axios.get('/api/projects/featured'), axios.get('/api/stats')])
+    Promise.all([axios.get('https://fundtrust.onrender.com/api/projects/featured'), axios.get('https://fundtrust.onrender.com/api/stats')])
       .then(([p, s]) => { setProjects(p.data); setStats(s.data) })
     setTimeout(() => setLoaded(true), 120)
   }, [])

@@ -14,7 +14,7 @@ export default function UploadProof() {
   const [proofs, setProofs] = useState([])
 
   useEffect(() => {
-    axios.get(`/api/projects/${id}`).then(r => { setProject(r.data); setProofs(r.data.proofs || []) })
+    axios.get(`https://fundtrust.onrender.com/api/projects/${id}`).then(r => { setProject(r.data); setProofs(r.data.proofs || []) })
   }, [id])
 
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -39,7 +39,7 @@ export default function UploadProof() {
       })
       toast.success('Proof uploaded!')
       setFile(null); setForm({ file_type:'image', description:'' }); setUploadProgress(0)
-      const r = await axios.get(`/api/projects/${id}`)
+      const r = await axios.get(`https://fundtrust.onrender.com/api/projects/${id}`)
       setProofs(r.data.proofs || [])
     } catch (err) {
       toast.error(err.response?.data?.error || 'Upload failed')

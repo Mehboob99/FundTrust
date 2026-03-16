@@ -15,7 +15,7 @@ export default function ManageProjects() {
 
   const del = async (id) => {
     if (!confirm('Delete campaign?')) return
-    try { await axios.delete(`/api/projects/${id}`); toast.success('Deleted!'); fetch() }
+    try { await axios.delete(`https://fundtrust.onrender.com/api/projects/${id}`); toast.success('Deleted!'); fetch() }
     catch { toast.error('Delete failed') }
   }
 
