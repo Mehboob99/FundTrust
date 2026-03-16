@@ -18,7 +18,7 @@ export default function Projects() {
     const params = {}
     if (cat && cat !== 'All') params.category = cat
     if (search) params.search = search
-    axios.get('/api/projects', { params })
+    axios.get('https://fundtrust.onrender.com/api/projects', { params })
       .then(r => setProjects(r.data))
       .finally(() => setLoading(false))
   }

@@ -14,7 +14,7 @@ export default function UploadProof() {
   const [proofs, setProofs] = useState([])
 
   useEffect(() => {
-    axios.get(`/api/projects/${id}`).then(r => { setProject(r.data); setProofs(r.data.proofs || []) })
+    axios.get(`https://fundtrust.onrender.com/api/projects/${id}`).then(r => { setProject(r.data); setProofs(r.data.proofs || []) })
   }, [id])
 
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -29,7 +29,7 @@ export default function UploadProof() {
     fd.append('file_type', form.file_type)
     fd.append('description', form.description)
     try {
-      await axios.post(`/api/ngo/upload-proof/${id}`, fd, {
+      await axios.post(`https://fundtrust.onrender.com/api/ngo/upload-proof/${id}`, fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
         timeout: 300000, // 5 minute timeout for large videos
         onUploadProgress: (progressEvent) => {
@@ -39,7 +39,7 @@ export default function UploadProof() {
       })
       toast.success('Proof uploaded!')
       setFile(null); setForm({ file_type:'image', description:'' }); setUploadProgress(0)
-      const r = await axios.get(`/api/projects/${id}`)
+      const r = await axios.get(`https://fundtrust.onrender.com/api/projects/${id}`)
       setProofs(r.data.proofs || [])
     } catch (err) {
       toast.error(err.response?.data?.error || 'Upload failed')

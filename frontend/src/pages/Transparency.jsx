@@ -10,7 +10,7 @@ export default function Transparency() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get('/api/transparency').then(r => setProofs(r.data)).finally(() => setLoading(false))
+    axios.get('https://fundtrust.onrender.com/api/transparency').then(r => setProofs(r.data)).finally(() => setLoading(false))
   }, [])
 
   const filtered = filter === 'All' ? proofs : proofs.filter(p => p.file_type === filter)
@@ -48,7 +48,7 @@ export default function Transparency() {
                   <div className={styles.mediaPreview}>
                     {p.file_type === 'image' && (
                       <img
-                        src={`/api/uploads/${p.file_path}`}
+                        src={`https://fundtrust.onrender.com/api/uploads/${p.file_path}`}
                         alt={p.description || 'Proof'}
                         className={styles.previewImg}
                         onError={(e) => e.target.style.display = 'none'}
@@ -56,12 +56,12 @@ export default function Transparency() {
                     )}
                     {p.file_type === 'video' && (
                       <video controls className={styles.previewVideo}>
-                        <source src={`/api/uploads/${p.file_path}`} />
+                        <source src={`https://fundtrust.onrender.com/api/uploads/${p.file_path}`} />
                       </video>
                     )}
                     {p.file_type === 'receipt' && (
                         <a
-                        href={`/api/uploads/${p.file_path}`}
+                        href={`https://fundtrust.onrender.com/api/uploads/${p.file_path}`}
                         target="_blank"
                         rel="noreferrer"
                         className={styles.receiptLink}

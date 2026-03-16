@@ -121,12 +121,12 @@ def seed_db():
     donor_id = db.execute("SELECT id FROM users WHERE email='donor@fundtrust.in'").fetchone()[0]
     projects = [
 
-    ('Digital Classrooms for Rural Schools','We are bringing digital education to 50 rural schools in Rajasthan. Tablets, projectors, and internet for children who never used a computer.','Rajasthan','Education',500000,312000,'/api/uploads/digital-classrooms.png'),
-    ('Community Kitchen - Feed 1000 Families','Nutritious meals for underprivileged families in Mumbai slums. Two hot meals a day ensuring no child sleeps hungry.','Mumbai, Maharashtra','Food & Nutrition',300000,187500,'/api/uploads/community-kitchen.png'),
-    ('Mobile Healthcare Camps in Villages','Monthly healthcare camps in remote UP villages — free checkups, medicines, and health awareness for thousands.','Uttar Pradesh','Healthcare',750000,423000,'/api/uploads/health-care.png'),
-    ('Clean Water for 10 Villages','Solar-powered water purification in drought-affected Vidarbha villages. Clean water for 5000+ residents.','Vidarbha, Maharashtra','Water & Sanitation',1200000,890000,'/api/uploads/water.png'),
-    ('Skill Training for Village Women','Empowering 200 rural women in Gujarat through tailoring, handicrafts & digital literacy training.','Gujarat','Women Empowerment',400000,156000,'/api/uploads/skill-training.png'),
-    ('Flood Relief for Bihar Villages','Emergency relief for flood-affected Bihar families — food, medicines, blankets & shelter for 2000+ families.','Bihar','Disaster Relief',800000,650000,'/api/uploads/flood-relief.png'),
+    ('Digital Classrooms for Rural Schools','We are bringing digital education to 50 rural schools in Rajasthan. Tablets, projectors, and internet for children who never used a computer.','Rajasthan','Education',500000,312000,'https://fundtrust.onrender.com/api/uploads/digital-classrooms.png'),
+    ('Community Kitchen - Feed 1000 Families','Nutritious meals for underprivileged families in Mumbai slums. Two hot meals a day ensuring no child sleeps hungry.','Mumbai, Maharashtra','Food & Nutrition',300000,187500,'https://fundtrust.onrender.com/api/uploads/community-kitchen.png'),
+    ('Mobile Healthcare Camps in Villages','Monthly healthcare camps in remote UP villages — free checkups, medicines, and health awareness for thousands.','Uttar Pradesh','Healthcare',750000,423000,'https://fundtrust.onrender.com/api/uploads/health-care.png'),
+    ('Clean Water for 10 Villages','Solar-powered water purification in drought-affected Vidarbha villages. Clean water for 5000+ residents.','Vidarbha, Maharashtra','Water & Sanitation',1200000,890000,'https://fundtrust.onrender.com/api/uploads/water.png'),
+    ('Skill Training for Village Women','Empowering 200 rural women in Gujarat through tailoring, handicrafts & digital literacy training.','Gujarat','Women Empowerment',400000,156000,'https://fundtrust.onrender.com/api/uploads/skill-training.png'),
+    ('Flood Relief for Bihar Villages','Emergency relief for flood-affected Bihar families — food, medicines, blankets & shelter for 2000+ families.','Bihar','Disaster Relief',800000,650000,'https://fundtrust.onrender.com/api/uploads/flood-relief.png'),
 ]
     for title,desc,loc,cat,goal,raised,img in projects:
         db.execute("INSERT INTO projects(ngo_id,title,description,location,category,goal_amount,amount_raised,image_url,created_at) VALUES(?,?,?,?,?,?,?,?,?)",
@@ -157,7 +157,7 @@ def ngo_required(f):
     return dec
 
 # ── AUTH ROUTES ───────────────────────────────────────────
-@app.route('/api/register', methods=['POST'])
+@app.route('https://fundtrust.onrender.com/api/register', methods=['POST'])
 def register():
     d = request.json
     if qry("SELECT id FROM users WHERE email=?",(d['email'].lower(),),one=True):
@@ -167,7 +167,7 @@ def register():
                d['role'],d.get('organization',''),d.get('phone',''),now()),commit=True)
     return jsonify({'message':'Account created','id':uid}), 201
 
-@app.route('/api/login', methods=['POST'])
+@app.route('https://fundtrust.onrender.com/api/login', methods=['POST'])
 def login():
     d = request.json
     user = row_to_dict(qry("SELECT * FROM users WHERE email=?",(d['email'].lower(),),one=True))
@@ -179,12 +179,12 @@ def login():
         return jsonify({'message':'Login successful','user':user})
     return jsonify({'error':'Invalid email or password'}), 401
 
-@app.route('/api/logout', methods=['POST'])
+@app.route('https://fundtrust.onrender.com/api/logout', methods=['POST'])
 def logout():
     session.clear()
     return jsonify({'message':'Logged out'})
 
-@app.route('/api/me')
+@app.route('https://fundtrust.onrender.com/api/me')
 def me():
     if 'user_id' not in session:
         return jsonify({'user':None})
@@ -192,7 +192,7 @@ def me():
     return jsonify({'user':user})
 
 # ── PROJECT ROUTES ────────────────────────────────────────
-@app.route('/api/projects')
+@app.route('https://fundtrust.onrender.com/api/projects')
 def get_projects():
     category = request.args.get('category','')
     search   = request.args.get('search','')
@@ -205,12 +205,12 @@ def get_projects():
     sql += " ORDER BY p.created_at DESC"
     return jsonify(rows_to_list(qry(sql,args)))
 
-@app.route('/api/projects/featured')
+@app.route('https://fundtrust.onrender.com/api/projects/featured')
 def featured():
     rows = qry("SELECT p.*, u.name AS ngo_name FROM projects p JOIN users u ON p.ngo_id=u.id WHERE p.status='active' ORDER BY p.created_at DESC LIMIT 6")
     return jsonify(rows_to_list(rows))
 
-@app.route('/api/projects/<int:pid>')
+@app.route('https://fundtrust.onrender.com/api/projects/<int:pid>')
 def get_project(pid):
     p = row_to_dict(qry("SELECT p.*, u.name AS ngo_name, u.organization FROM projects p JOIN users u ON p.ngo_id=u.id WHERE p.id=?",(pid,),one=True))
     if not p: return jsonify({'error':'Not found'}),404
@@ -219,7 +219,7 @@ def get_project(pid):
     p['donor_count'] = qry("SELECT COUNT(*) FROM donations WHERE project_id=?",(pid,),one=True)[0]
     return jsonify(p)
 
-@app.route('/api/projects', methods=['POST'])
+@app.route('https://fundtrust.onrender.com/api/projects', methods=['POST'])
 @ngo_required
 def create_project():
     d = request.json
@@ -227,7 +227,7 @@ def create_project():
               (session['user_id'],d['title'],d['description'],d['location'],d.get('category','General'),float(d['goal_amount']),d.get('image_url',''),now()),commit=True)
     return jsonify({'message':'Campaign created','id':pid}),201
 
-@app.route('/api/projects/<int:pid>', methods=['PUT'])
+@app.route('https://fundtrust.onrender.com/api/projects/<int:pid>', methods=['PUT'])
 @ngo_required
 def update_project(pid):
     p = qry("SELECT * FROM projects WHERE id=? AND ngo_id=?",(pid,session['user_id']),one=True)
@@ -237,7 +237,7 @@ def update_project(pid):
         (d['title'],d['description'],d['location'],d.get('category','General'),float(d['goal_amount']),d.get('status','active'),pid),commit=True)
     return jsonify({'message':'Updated'})
 
-@app.route('/api/projects/<int:pid>', methods=['DELETE'])
+@app.route('https://fundtrust.onrender.com/api/projects/<int:pid>', methods=['DELETE'])
 @ngo_required
 def delete_project(pid):
     p = qry("SELECT * FROM projects WHERE id=? AND ngo_id=?",(pid,session['user_id']),one=True)
@@ -248,13 +248,13 @@ def delete_project(pid):
     return jsonify({'message':'Deleted'})
 
 # ── NGO ROUTES ────────────────────────────────────────────
-@app.route('/api/ngo/projects')
+@app.route('https://fundtrust.onrender.com/api/ngo/projects')
 @ngo_required
 def ngo_projects():
     rows = qry("SELECT p.*,(SELECT COUNT(*) FROM donations d WHERE d.project_id=p.id) AS donor_count FROM projects p WHERE p.ngo_id=? ORDER BY p.created_at DESC",(session['user_id'],))
     return jsonify(rows_to_list(rows))
 
-@app.route('/api/ngo/stats')
+@app.route('https://fundtrust.onrender.com/api/ngo/stats')
 @ngo_required
 def ngo_stats():
     rows = qry("SELECT amount_raised,(SELECT COUNT(*) FROM donations d WHERE d.project_id=p.id) AS dc FROM projects p WHERE p.ngo_id=?",(session['user_id'],))
@@ -263,7 +263,7 @@ def ngo_stats():
     total_proj   = len(rows)
     return jsonify({'total_raised':total_raised,'total_donors':total_donors,'total_projects':total_proj})
 
-@app.route('/api/ngo/upload-proof/<int:pid>', methods=['POST'])
+@app.route('https://fundtrust.onrender.com/api/ngo/upload-proof/<int:pid>', methods=['POST'])
 @ngo_required
 def upload_proof(pid):
     p = qry("SELECT * FROM projects WHERE id=? AND ngo_id=?",(pid,session['user_id']),one=True)
@@ -281,7 +281,7 @@ def upload_proof(pid):
     return jsonify({'message':'Proof uploaded','file':fname}),201
 
 # ── DONATE ────────────────────────────────────────────────
-@app.route('/api/donate/<int:pid>', methods=['POST'])
+@app.route('https://fundtrust.onrender.com/api/donate/<int:pid>', methods=['POST'])
 @login_required
 def donate(pid):
     if session.get('role') != 'donor':
@@ -296,26 +296,26 @@ def donate(pid):
     return jsonify({'message':f'Thank you! Rs.{amount:,.0f} donated!'})
 
 # ── DONOR ROUTES ──────────────────────────────────────────
-@app.route('/api/donor/donations')
+@app.route('https://fundtrust.onrender.com/api/donor/donations')
 @login_required
 def donor_donations():
     rows = qry("SELECT d.*, p.title AS project_title, p.location, p.id AS project_id FROM donations d JOIN projects p ON d.project_id=p.id WHERE d.donor_id=? ORDER BY d.date DESC",(session['user_id'],))
     return jsonify(rows_to_list(rows))
 
-@app.route('/api/donor/stats')
+@app.route('https://fundtrust.onrender.com/api/donor/stats')
 @login_required
 def donor_stats():
     rows = qry("SELECT amount, project_id FROM donations WHERE donor_id=?",(session['user_id'],))
     return jsonify({'total_donated':sum(r['amount'] for r in rows),'projects_supported':len(set(r['project_id'] for r in rows)),'total_donations':len(rows)})
 
 # ── TRANSPARENCY ──────────────────────────────────────────
-@app.route('/api/transparency')
+@app.route('https://fundtrust.onrender.com/api/transparency')
 def transparency():
     rows = qry("SELECT pr.*, p.title AS project_title, p.id AS project_id, u.name AS ngo_name FROM proofs pr JOIN projects p ON pr.project_id=p.id JOIN users u ON p.ngo_id=u.id ORDER BY pr.upload_date DESC")
     return jsonify(rows_to_list(rows))
 
 # ── STATS ─────────────────────────────────────────────────
-@app.route('/api/stats')
+@app.route('https://fundtrust.onrender.com/api/stats')
 def stats():
     total_raised = qry("SELECT COALESCE(SUM(amount),0) FROM donations",one=True)[0]
     total_donors = qry("SELECT COUNT(DISTINCT donor_id) FROM donations",one=True)[0]
@@ -323,7 +323,7 @@ def stats():
     return jsonify({'total_raised':total_raised,'total_donors':total_donors,'total_projects':total_proj})
 
 # ── UPLOADS (with video streaming support) ───────────────
-@app.route('/api/uploads/<path:filename>')
+@app.route('https://fundtrust.onrender.com/api/uploads/<path:filename>')
 def serve_upload(filename):
     from flask import Response
     import mimetypes
@@ -373,7 +373,7 @@ def serve_upload(filename):
     return send_from_directory(UPLOAD_DIR, filename)
 
 # ── CATEGORIES ────────────────────────────────────────────
-@app.route('/api/categories')
+@app.route('https://fundtrust.onrender.com/api/categories')
 def categories():
     cats = [c[0] for c in qry("SELECT DISTINCT category FROM projects WHERE status='active'") if c[0]]
     return jsonify(cats)

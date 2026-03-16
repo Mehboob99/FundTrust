@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get('/api/me').then(r => {
+    axios.get('https://fundtrust.onrender.com/api/me').then(r => {
       setUser(r.data.user)
     }).catch(() => {
       setUser(null)
@@ -18,18 +18,18 @@ export function AuthProvider({ children }) {
   }, [])
 
   const login = async (email, password) => {
-    const r = await axios.post('/api/login', { email, password })
+    const r = await axios.post('https://fundtrust.onrender.com/api/login', { email, password })
     setUser(r.data.user)
     return r.data
   }
 
   const register = async (data) => {
-    const r = await axios.post('/api/register', data)
+    const r = await axios.post('https://fundtrust.onrender.com/api/register', data)
     return r.data
   }
 
   const logout = async () => {
-    await axios.post('/api/logout')
+    await axios.post('https://fundtrust.onrender.com/api/logout')
     setUser(null)
   }
 

@@ -19,7 +19,7 @@ export default function ProjectDetail() {
   const [tab, setTab] = useState('about')
 
   useEffect(() => {
-    axios.get(`/api/projects/${id}`)
+    axios.get(`https://fundtrust.onrender.com/api/projects/${id}`)
       .then(r => setProject(r.data))
       .catch(() => navigate('/projects'))
       .finally(() => setLoading(false))
@@ -30,10 +30,10 @@ export default function ProjectDetail() {
     if (!amount || isNaN(amount) || Number(amount) < 1) { toast.error('Enter valid amount (min ₹1)'); return }
     setDonating(true)
     try {
-      const r = await axios.post(`/api/donate/${id}`, { amount: Number(amount), message })
+      const r = await axios.post(`https://fundtrust.onrender.com/api/donate/${id}`, { amount: Number(amount), message })
       toast.success(r.data.message)
       setAmount(''); setMsg('')
-      const r2 = await axios.get(`/api/projects/${id}`)
+      const r2 = await axios.get(`https://fundtrust.onrender.com/api/projects/${id}`)
       setProject(r2.data)
     } catch (e) {
       toast.error(e.response?.data?.error || 'Donation failed')
@@ -84,7 +84,7 @@ export default function ProjectDetail() {
                       <div key={pr.id} style={{ background: '#f0fdf4', border: '1px solid #c8e6c9', borderRadius: 14, overflow: 'hidden' }}>
                         {pr.file_type === 'image' && (
                           <img
-                            src={`/api/uploads/${pr.file_path}`}
+                            src={`https://fundtrust.onrender.com/api/uploads/${pr.file_path}`}
                             alt={pr.description}
                             style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }}
                             onError={e => { e.target.style.display='none' }}
@@ -95,7 +95,7 @@ export default function ProjectDetail() {
                             controls
                             style={{ width: '100%', height: 180, background: '#000', display: 'block' }}
                           >
-                            <source src={`/api/uploads/${pr.file_path}`} />
+                            <source src={`https://fundtrust.onrender.com/api/uploads/${pr.file_path}`} />
                             Your browser does not support video.
                           </video>
                         )}

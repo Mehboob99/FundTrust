@@ -13,7 +13,7 @@ export default function NgoDashboard() {
 
   const fetchData = () => {
     setLoading(true)
-    Promise.all([axios.get('/api/ngo/stats'), axios.get('/api/ngo/projects')])
+    Promise.all([axios.get('https://fundtrust.onrender.com/api/ngo/stats'), axios.get('https://fundtrust.onrender.com/api/ngo/projects')])
       .then(([s, p]) => { setStats(s.data); setProjects(p.data) })
       .finally(() => setLoading(false))
   }
@@ -23,7 +23,7 @@ export default function NgoDashboard() {
   const deleteProject = async (id) => {
     if (!confirm('Delete this campaign?')) return
     try {
-      await axios.delete(`/api/projects/${id}`)
+      await axios.delete(`https://fundtrust.onrender.com/api/projects/${id}`)
       toast.success('Campaign deleted')
       fetchData()
     } catch { toast.error('Delete failed') }

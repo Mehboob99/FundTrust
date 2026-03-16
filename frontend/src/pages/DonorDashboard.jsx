@@ -11,7 +11,7 @@ export default function DonorDashboard() {
   const [loading, setLoading]   = useState(true)
 
   useEffect(() => {
-    Promise.all([axios.get('/api/donor/stats'), axios.get('/api/donor/donations')])
+    Promise.all([axios.get('https://fundtrust.onrender.com/api/donor/stats'), axios.get('https://fundtrust.onrender.com/api/donor/donations')])
       .then(([s, d]) => { setStats(s.data); setDonations(d.data) })
       .finally(() => setLoading(false))
   }, [])
