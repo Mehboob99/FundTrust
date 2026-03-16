@@ -14,7 +14,7 @@ import sqlite3, os
 app = Flask(__name__)
 app.secret_key = 'fundtrust_react_2024'
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max
-CORS(app, supports_credentials=True, origins=['http://localhost:5173','http://localhost:3000','http://localhost:5177'])
+CORS(app, supports_credentials=True, origins=['http://localhost:5173','http://localhost:3000','https://capable-cactus-a37953.netlify.app'])
 
 BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 DATABASE    = os.path.join(BASE_DIR, 'database.db')
