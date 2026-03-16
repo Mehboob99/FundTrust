@@ -8,7 +8,7 @@ cd backend
 pip install -r requirements.txt
 python app.py
 ```
-Backend runs on: http://localhost:5000
+Backend runs on: 
 
 ### Step 2: Frontend (React)
 Open NEW terminal window:
