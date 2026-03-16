@@ -84,7 +84,7 @@ export default function ProjectDetail() {
                       <div key={pr.id} style={{ background: '#f0fdf4', border: '1px solid #c8e6c9', borderRadius: 14, overflow: 'hidden' }}>
                         {pr.file_type === 'image' && (
                           <img
-                            src={`http://localhost:5000/api/uploads/${pr.file_path}`}
+                            src={`${import.meta.env.VITE_API_URL}/api/uploads/${pr.file_path}`}
                             alt={pr.description}
                             style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }}
                             onError={e => { e.target.style.display='none' }}
@@ -95,7 +95,7 @@ export default function ProjectDetail() {
                             controls
                             style={{ width: '100%', height: 180, background: '#000', display: 'block' }}
                           >
-                            <source src={`http://localhost:5000/api/uploads/${pr.file_path}`} />
+                            <source src={`${import.meta.env.VITE_API_URL}/api/uploads/${pr.file_path}`} />
                             Your browser does not support video.
                           </video>
                         )}

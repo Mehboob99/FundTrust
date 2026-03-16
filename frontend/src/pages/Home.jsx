@@ -297,7 +297,7 @@ export default function Home() {
 
       {/* ════════════ HERO ════════════ */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('http://localhost:5000/api/uploads/hero.png')", backgroundSize: 'cover', backgroundPosition: 'center 30%', animation: 'bgPan 18s ease-in-out infinite alternate' }} />
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('${import.meta.env.VITE_API_URL}/api/uploads/hero.png')", backgroundSize: 'cover', backgroundPosition: 'center 30%', animation: 'bgPan 18s ease-in-out infinite alternate' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(3,38,17,0.88) 0%,rgba(20,83,45,0.78) 55%,rgba(5,46,22,0.62) 100%)' }} />
         <div style={{ position: 'absolute', top: '12%', right: '8%', width: 380, height: 380, borderRadius: '50%', background: 'radial-gradient(circle,rgba(74,222,128,0.12),transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle,rgba(74,222,128,0.08),transparent 60%)', pointerEvents: 'none' }} />
