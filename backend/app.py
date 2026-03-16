@@ -378,11 +378,16 @@ def categories():
     cats = [c[0] for c in qry("SELECT DISTINCT category FROM projects WHERE status='active'") if c[0]]
     return jsonify(cats)
 
-if __name__ == '__main__':
+import os
+
+if __name__ == "__main__":
     init_db()
     seed_db()
-    print('\n' + '='*55)
-    print('  FundTrust - Flask API Backend')
-    print('  Running on: ')
-    print('='*55 + '\n')
-    app.run(debug=True, port=5000)
+
+    print("\n" + "="*55)
+    print(" FundTrust - Flask API Backend ")
+    print(" Running on Render ")
+    print("="*55 + "\n")
+
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
