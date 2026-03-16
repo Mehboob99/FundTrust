@@ -15,7 +15,7 @@ export default function AddProject() {
 
   useEffect(() => {
     if (isEdit) {
-      axios.get(`https://fundtrust.onrender.com/api/projects/${id}`).then(r => {
+      axios.get(`/api/projects/${id}`).then(r => {
         const p = r.data
         setForm({ title: p.title, description: p.description, location: p.location, category: p.category || 'Education', goal_amount: p.goal_amount, image_url: p.image_url || '', status: p.status })
       })
@@ -31,10 +31,10 @@ export default function AddProject() {
     setLoading(true)
     try {
       if (isEdit) {
-        await axios.put(`https://fundtrust.onrender.com/api/projects/${id}`, form)
+        await axios.put(`/api/projects/${id}`, form)
         toast.success('Campaign updated!')
       } else {
-        await axios.post('https://fundtrust.onrender.com/api/projects', form)
+        await axios.post('/api/projects', form)
         toast.success('Campaign created!')
       }
       navigate('/ngo/dashboard')

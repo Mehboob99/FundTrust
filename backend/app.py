@@ -184,7 +184,7 @@ def logout():
     session.clear()
     return jsonify({'message':'Logged out'})
 
-@app.route('https://fundtrust.onrender.com/api/me')
+@app.route('/api/me')
 def me():
     if 'user_id' not in session:
         return jsonify({'user':None})
@@ -192,7 +192,7 @@ def me():
     return jsonify({'user':user})
 
 # ── PROJECT ROUTES ────────────────────────────────────────
-@app.route('https://fundtrust.onrender.com/api/projects')
+@app.route('/api/projects')
 def get_projects():
     category = request.args.get('category','')
     search   = request.args.get('search','')
@@ -205,12 +205,12 @@ def get_projects():
     sql += " ORDER BY p.created_at DESC"
     return jsonify(rows_to_list(qry(sql,args)))
 
-@app.route('https://fundtrust.onrender.com/api/projects/featured')
+@app.route('/api/projects/featured')
 def featured():
     rows = qry("SELECT p.*, u.name AS ngo_name FROM projects p JOIN users u ON p.ngo_id=u.id WHERE p.status='active' ORDER BY p.created_at DESC LIMIT 6")
     return jsonify(rows_to_list(rows))
 
-@app.route('https://fundtrust.onrender.com/api/projects/<int:pid>')
+@app.route('/api/projects/<int:pid>')
 def get_project(pid):
     p = row_to_dict(qry("SELECT p.*, u.name AS ngo_name, u.organization FROM projects p JOIN users u ON p.ngo_id=u.id WHERE p.id=?",(pid,),one=True))
     if not p: return jsonify({'error':'Not found'}),404
@@ -219,7 +219,7 @@ def get_project(pid):
     p['donor_count'] = qry("SELECT COUNT(*) FROM donations WHERE project_id=?",(pid,),one=True)[0]
     return jsonify(p)
 
-@app.route('https://fundtrust.onrender.com/api/projects', methods=['POST'])
+@app.route('/api/projects', methods=['POST'])
 @ngo_required
 def create_project():
     d = request.json
@@ -227,7 +227,7 @@ def create_project():
               (session['user_id'],d['title'],d['description'],d['location'],d.get('category','General'),float(d['goal_amount']),d.get('image_url',''),now()),commit=True)
     return jsonify({'message':'Campaign created','id':pid}),201
 
-@app.route('https://fundtrust.onrender.com/api/projects/<int:pid>', methods=['PUT'])
+@app.route('/api/projects/<int:pid>', methods=['PUT'])
 @ngo_required
 def update_project(pid):
     p = qry("SELECT * FROM projects WHERE id=? AND ngo_id=?",(pid,session['user_id']),one=True)
@@ -237,7 +237,7 @@ def update_project(pid):
         (d['title'],d['description'],d['location'],d.get('category','General'),float(d['goal_amount']),d.get('status','active'),pid),commit=True)
     return jsonify({'message':'Updated'})
 
-@app.route('https://fundtrust.onrender.com/api/projects/<int:pid>', methods=['DELETE'])
+@app.route('/api/projects/<int:pid>', methods=['DELETE'])
 @ngo_required
 def delete_project(pid):
     p = qry("SELECT * FROM projects WHERE id=? AND ngo_id=?",(pid,session['user_id']),one=True)
@@ -315,7 +315,7 @@ def transparency():
     return jsonify(rows_to_list(rows))
 
 # ── STATS ─────────────────────────────────────────────────
-@app.route('https://fundtrust.onrender.com/api/stats')
+@app.route('/api/stats')
 def stats():
     total_raised = qry("SELECT COALESCE(SUM(amount),0) FROM donations",one=True)[0]
     total_donors = qry("SELECT COUNT(DISTINCT donor_id) FROM donations",one=True)[0]

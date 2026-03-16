@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get('https://fundtrust.onrender.com/api/me').then(r => {
+    axios.get('/api/me').then(r => {
       setUser(r.data.user)
     }).catch(() => {
       setUser(null)

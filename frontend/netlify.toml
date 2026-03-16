@@ -3,4 +3,4 @@
   publish = "dist"
 
 [build.environment]
-  VITE_API_URL = "https://fundtrust.onrender.com"
+  VITE_API_URL = ""

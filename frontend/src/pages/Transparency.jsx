@@ -48,7 +48,7 @@ export default function Transparency() {
                   <div className={styles.mediaPreview}>
                     {p.file_type === 'image' && (
                       <img
-                        src={`https://fundtrust.onrender.com/api/uploads/${p.file_path}`}
+                        src={`/api/uploads/${p.file_path}`}
                         alt={p.description || 'Proof'}
                         className={styles.previewImg}
                         onError={(e) => e.target.style.display = 'none'}
@@ -56,12 +56,12 @@ export default function Transparency() {
                     )}
                     {p.file_type === 'video' && (
                       <video controls className={styles.previewVideo}>
-                        <source src={`https://fundtrust.onrender.com/api/uploads/${p.file_path}`} />
+                        <source src={`/api/uploads/${p.file_path}`} />
                       </video>
                     )}
                     {p.file_type === 'receipt' && (
                         <a
-                        href={`https://fundtrust.onrender.com/api/uploads/${p.file_path}`}
+                        href={`/api/uploads/${p.file_path}`}
                         target="_blank"
                         rel="noreferrer"
                         className={styles.receiptLink}
