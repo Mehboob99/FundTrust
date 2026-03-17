@@ -16,7 +16,8 @@ app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
 CORS(app, supports_credentials=True, origins=[
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://capable-cactus-a37953.netlify.app'
+    'https://capable-cactus-a37953.netlify.app',
+    'https://fund-trust.vercel.app'
 ])
 
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
