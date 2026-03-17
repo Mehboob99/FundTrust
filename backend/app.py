@@ -13,6 +13,9 @@ import sqlite3, os, mimetypes
 app = Flask(__name__)
 app.secret_key = 'fundtrust_react_2024'
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 CORS(app, supports_credentials=True, origins=[
     'http://localhost:5173',
     'http://localhost:3000',
