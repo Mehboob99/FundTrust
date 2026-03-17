@@ -1,24 +1,27 @@
 """
 FundTrust - Flask REST API Backend
 React Frontend ke liye API
-Run: python app.py
 """
-from flask import Flask, request, jsonify, session, send_from_directory
+from flask import Flask, request, jsonify, session, send_from_directory, Response
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from functools import wraps
-import sqlite3, os
+import sqlite3, os, mimetypes
 
 app = Flask(__name__)
 app.secret_key = 'fundtrust_react_2024'
-app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max
-CORS(app, supports_credentials=True, origins=['http://localhost:5173','http://localhost:3000','https://capable-cactus-a37953.netlify.app'])
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
+CORS(app, supports_credentials=True, origins=[
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://capable-cactus-a37953.netlify.app'
+])
 
-BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
-DATABASE    = os.path.join(BASE_DIR, 'database.db')
-UPLOAD_DIR  = os.path.join(BASE_DIR, 'uploads')
+BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
+DATABASE   = os.path.join(BASE_DIR, 'database.db')
+UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
 ALLOWED_IMG = {'png','jpg','jpeg','gif','webp'}
 ALLOWED_VID = {'mp4','avi','mov','mkv'}
 ALLOWED_DOC = {'pdf','png','jpg','jpeg'}
@@ -108,7 +111,6 @@ def init_db():
     db.close()
 
 def seed_db():
-    
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
     if db.execute("SELECT COUNT(*) FROM users").fetchone()[0] > 0:
@@ -121,38 +123,13 @@ def seed_db():
                ('Rahul Sharma','donor@fundtrust.in',generate_password_hash('password123'),'donor','9123456789',t))
     donor_id = db.execute("SELECT id FROM users WHERE email='donor@fundtrust.in'").fetchone()[0]
     projects = [
-
-('Digital Classrooms for Rural Schools',
-'We are bringing digital education to 50 rural schools in Rajasthan. Tablets, projectors, and internet for children who never used a computer.',
-'Rajasthan','Education',500000,312000,
-'https://fundtrust.onrender.com/api/uploads/digital-classrooms.png'),
-
-('Community Kitchen - Feed 1000 Families',
-'Nutritious meals for underprivileged families in Mumbai slums. Two hot meals a day ensuring no child sleeps hungry.',
-'Mumbai, Maharashtra','Food & Nutrition',300000,187500,
-'https://fundtrust.onrender.com/api/uploads/community-kitchen.png'),
-
-('Mobile Healthcare Camps in Villages',
-'Monthly healthcare camps in remote UP villages — free checkups, medicines, and health awareness for thousands.',
-'Uttar Pradesh','Healthcare',750000,423000,
-'https://fundtrust.onrender.com/api/uploads/health-care.png'),
-
-('Clean Water for 10 Villages',
-'Solar-powered water purification in drought-affected Vidarbha villages. Clean water for 5000+ residents.',
-'Vidarbha, Maharashtra','Water & Sanitation',1200000,890000,
-'https://fundtrust.onrender.com/api/uploads/water.png'),
-
-('Skill Training for Village Women',
-'Empowering 200 rural women in Gujarat through tailoring, handicrafts & digital literacy training.',
-'Gujarat','Women Empowerment',400000,156000,
-'https://fundtrust.onrender.com/api/uploads/skill-training.png'),
-
-('Flood Relief for Bihar Villages',
-'Emergency relief for flood-affected Bihar families — food, medicines, blankets & shelter for 2000+ families.',
-'Bihar','Disaster Relief',800000,650000,
-'https://fundtrust.onrender.com/api/uploads/flood-relief.png'),
-
-]
+        ('Digital Classrooms for Rural Schools','We are bringing digital education to 50 rural schools in Rajasthan. Tablets, projectors, and internet for children who never used a computer.','Rajasthan','Education',500000,312000,'https://fundtrust.onrender.com/api/uploads/digital-classrooms.png'),
+        ('Community Kitchen - Feed 1000 Families','Nutritious meals for underprivileged families in Mumbai slums. Two hot meals a day ensuring no child sleeps hungry.','Mumbai, Maharashtra','Food & Nutrition',300000,187500,'https://fundtrust.onrender.com/api/uploads/community-kitchen.png'),
+        ('Mobile Healthcare Camps in Villages','Monthly healthcare camps in remote UP villages — free checkups, medicines, and health awareness for thousands.','Uttar Pradesh','Healthcare',750000,423000,'https://fundtrust.onrender.com/api/uploads/health-care.png'),
+        ('Clean Water for 10 Villages','Solar-powered water purification in drought-affected Vidarbha villages. Clean water for 5000+ residents.','Vidarbha, Maharashtra','Water & Sanitation',1200000,890000,'https://fundtrust.onrender.com/api/uploads/water.png'),
+        ('Skill Training for Village Women','Empowering 200 rural women in Gujarat through tailoring, handicrafts & digital literacy training.','Gujarat','Women Empowerment',400000,156000,'https://fundtrust.onrender.com/api/uploads/skill-training.png'),
+        ('Flood Relief for Bihar Villages','Emergency relief for flood-affected Bihar families — food, medicines, blankets & shelter for 2000+ families.','Bihar','Disaster Relief',800000,650000,'https://fundtrust.onrender.com/api/uploads/flood-relief.png'),
+    ]
     for title,desc,loc,cat,goal,raised,img in projects:
         db.execute("INSERT INTO projects(ngo_id,title,description,location,category,goal_amount,amount_raised,image_url,created_at) VALUES(?,?,?,?,?,?,?,?,?)",
                    (ngo_id,title,desc,loc,cat,goal,raised,img,t))
@@ -161,6 +138,10 @@ def seed_db():
                    (donor_id,pid,round(raised*0.3),'Happy to support!',t))
     db.commit(); db.close()
     print('  Sample data seeded!')
+
+# ── GUNICORN KE LIYE - MODULE LEVEL PE INIT ───────────────
+init_db()
+seed_db()
 
 # ── AUTH DECORATOR ────────────────────────────────────────
 def login_required(f):
@@ -347,30 +328,22 @@ def stats():
     total_proj   = qry("SELECT COUNT(*) FROM projects",one=True)[0]
     return jsonify({'total_raised':total_raised,'total_donors':total_donors,'total_projects':total_proj})
 
-# ── UPLOADS (with video streaming support) ───────────────
+# ── UPLOADS ───────────────────────────────────────────────
 @app.route('/api/uploads/<path:filename>')
 def serve_upload(filename):
-    from flask import Response
-    import mimetypes
     filepath = os.path.join(UPLOAD_DIR, filename)
     if not os.path.exists(filepath):
         return jsonify({'error': 'File not found'}), 404
-    
     mime_type, _ = mimetypes.guess_type(filepath)
     file_size = os.path.getsize(filepath)
-    
-    # Video streaming - Range request support
     range_header = request.headers.get('Range', None)
     if range_header and mime_type and mime_type.startswith('video'):
         byte_start = 0
         byte_end = file_size - 1
-        
         match = range_header.replace('bytes=', '').split('-')
         if match[0]: byte_start = int(match[0])
         if match[1]: byte_end = int(match[1])
-        
         length = byte_end - byte_start + 1
-        
         def generate_chunk():
             with open(filepath, 'rb') as f:
                 f.seek(byte_start)
@@ -378,23 +351,15 @@ def serve_upload(filename):
                 while remaining > 0:
                     chunk_size = min(8192, remaining)
                     data = f.read(chunk_size)
-                    if not data:
-                        break
+                    if not data: break
                     remaining -= len(data)
                     yield data
-        
-        response = Response(
-            generate_chunk(),
-            206,
-            headers={
-                'Content-Range': f'bytes {byte_start}-{byte_end}/{file_size}',
-                'Accept-Ranges': 'bytes',
-                'Content-Length': str(length),
-                'Content-Type': mime_type or 'video/mp4',
-            }
-        )
-        return response
-    
+        return Response(generate_chunk(), 206, headers={
+            'Content-Range': f'bytes {byte_start}-{byte_end}/{file_size}',
+            'Accept-Ranges': 'bytes',
+            'Content-Length': str(length),
+            'Content-Type': mime_type or 'video/mp4',
+        })
     return send_from_directory(UPLOAD_DIR, filename)
 
 # ── CATEGORIES ────────────────────────────────────────────
@@ -403,16 +368,6 @@ def categories():
     cats = [c[0] for c in qry("SELECT DISTINCT category FROM projects WHERE status='active'") if c[0]]
     return jsonify(cats)
 
-import os
-
-if __name__ == "__main__":
-    init_db()
-    seed_db()
-
-    print("\n" + "="*55)
-    print(" FundTrust - Flask API Backend ")
-    print(" Running on Render ")
-    print("="*55 + "\n")
-
+if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
